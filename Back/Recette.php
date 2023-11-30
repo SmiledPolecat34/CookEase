@@ -63,9 +63,9 @@ class Recette {
         $this->preparation_time = $preparation_time;
     }
 
-    public function setUtensils($utensils) {
-        $this->utensils = $utensils;
-    }
+    public function setUstensils($ustensils) {
+        $this->ustensils = $ustensils;
+    }    
 
     public function setQuantity($quantity) {
         $this->quantity = $quantity;
