@@ -1,76 +1,5 @@
 <?php
-
-class Categorie {
-    private $id;
-    private $name;
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setId($id) {
-        $this->id = $id;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-    }
-}
-
-class Ingredient {
-    private $id;
-    private $name;
-
-    public function getId() {
-        return $this->id;
-    }
-
-    public function getName() {
-        return $this->name;
-    }
-
-    public function setId($id) {
-        $this->id = $id;
-    }
-
-    public function setName($name) {
-        $this->name = $name;
-    }
-}
-
-class RecetteIngredient {
-    private $recette_id;
-    private $ingredient_id;
-    private $quantity;
-
-    public function getRecetteId() {
-        return $this->recette_id;
-    }
-
-    public function getIngredientId() {
-        return $this->ingredient_id;
-    }
-
-    public function getQuantity() {
-        return $this->quantity;
-    }
-
-    public function setRecetteId($recette_id) {
-        $this->recette_id = $recette_id;
-    }
-
-    public function setIngredientId($ingredient_id) {
-        $this->ingredient_id = $ingredient_id;
-    }
-
-    public function setQuantity($quantity) {
-        $this->quantity = $quantity;
-    }
-}
+// Recette.php
 
 class Recette {
     private $id;
@@ -90,7 +19,7 @@ class Recette {
         return $this->name;
     }
 
-    public function getImageUrl() {
+    public function getImage() {
         return $this->image_url;
     }
 
@@ -122,7 +51,7 @@ class Recette {
         $this->name = $name;
     }
 
-    public function setImageUrl($image_url) {
+    public function setImage($image_url) {
         $this->image_url = $image_url;
     }
 
