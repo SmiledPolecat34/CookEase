@@ -1,9 +1,7 @@
 <?php
 
-// RecetteTest.php
-
-require_once ('config.php');
-require_once ('./Back/Recette.php');
+require_once('config.php');
+require_once('./Back/Recette.php');
 
 use PHPUnit\Framework\TestCase;
 
@@ -21,46 +19,40 @@ class RecetteTest extends TestCase {
         $this->assertEquals('Salade de tomate', $recette->getName());
     }
 
-    // public function testGetDescription() {
-    //     $recette = new Recette();
-    //     $recette->setDescription('Couper les tomates en rondelles');
-    //     $this->assertEquals('Couper les tomates en rondelles', $recette->getDescription());
-    // }
-
     public function testGetImage() {
         $recette = new Recette();
         $recette->setImage('tomate.jpg');
         $this->assertEquals('tomate.jpg', $recette->getImage());
     }
 
-    public function testDifficulty(){
+    public function testDifficulte(){
         $recette = new Recette();
-        $recette->setDifficulty('Facile');
-        $this->assertEquals('Facile', $recette->getDifficulty());
+        $recette->setDifficulte('Facile');
+        $this->assertEquals('Facile', $recette->getDifficulte());
     }
 
-    public function testGetPreparationTime() {
+    public function testGetTempsPreparation() {
         $recette = new Recette();
-        $recette->setPreparationTime(10);
-        $this->assertEquals(10, $recette->getPreparationTime());
+        $recette->setTempsPreparation(10);
+        $this->assertEquals(10, $recette->getTempsPreparation());
     }
 
-    public function testGetUtensils() {
+    public function testGetUstensiles() {
         $recette = new Recette();
-        $recette->setUtensils('Couteau');
-        $this->assertEquals('Couteau', $recette->getUtensils());
+        $recette->setUstensiles('Couteau');
+        $this->assertEquals('Couteau', $recette->getUstensiles());
     }
 
-    public function testGetQuantity() {
+    public function testGetQuantite() {
         $recette = new Recette();
-        $recette->setQuantity(1);
-        $this->assertEquals(1, $recette->getQuantity());
+        $recette->setQuantite(1);
+        $this->assertEquals(1, $recette->getQuantite());
     }
 
-    public function testGetCategoryId() {
+    public function testGetIdCategorie() {
         $recette = new Recette();
-        $recette->setCategoryId(1);
-        $this->assertEquals(1, $recette->getCategoryId());
+        $recette->setIdCategorie(1);
+        $this->assertEquals(1, $recette->getIdCategorie());
     }
 
     public function testSetId() {
@@ -75,129 +67,114 @@ class RecetteTest extends TestCase {
         $this->assertEquals('Salade de tomate', $recette->getName());
     }
 
-    // public function testSetDescription() {
-
-    //     $recette = new Recette();
-    //     $recette->setDescription('Couper les tomates en rondelles');
-    //     $this->assertEquals('Couper les tomates en rondelles', $recette->getDescription());
-    // }
-
     public function testSetImage() {
         $recette = new Recette();
         $recette->setImage('tomate.jpg');
         $this->assertEquals('tomate.jpg', $recette->getImage());
     }
 
-    public function testSetDifficulty() {
+    public function testSetDifficulte() {
         $recette = new Recette();
-        $recette->setDifficulty('Facile');
-        $this->assertEquals('Facile', $recette->getDifficulty());
+        $recette->setDifficulte('Facile');
+        $this->assertEquals('Facile', $recette->getDifficulte());
     }
 
-    public function testSetPreparationTime() {
+    public function testSetTempsPreparation() {
         $recette = new Recette();
-        $recette->setPreparationTime(10);
-        $this->assertEquals(10, $recette->getPreparationTime());
+        $recette->setTempsPreparation(10);
+        $this->assertEquals(10, $recette->getTempsPreparation());
     }
 
-    public function testSetUtensils() {
+    public function testSetUstensiles() {
         $recette = new Recette();
-        $recette->setUtensils('Couteau');
-        $this->assertEquals('Couteau', $recette->getUtensils());
+        $recette->setUstensiles('Couteau');
+        $this->assertEquals('Couteau', $recette->getUstensiles());
     }
 
-    public function testSetQuantity() {
+    public function testSetQuantite() {
         $recette = new Recette();
-        $recette->setQuantity(1);
-        $this->assertEquals(1, $recette->getQuantity());
+        $recette->setQuantite(1);
+        $this->assertEquals(1, $recette->getQuantite());
     }
 
-    public function testSetCategoryId() {
+    public function testSetIdCategorie() {
         $recette = new Recette();
-        $recette->setCategoryId(1);
-        $this->assertEquals(1, $recette->getCategoryId());
+        $recette->setIdCategorie(1);
+        $this->assertEquals(1, $recette->getIdCategorie());
     }
 
-    public function addRecipeTest(){
-        $recette = new Recette();
-        $recette->setName('Salade de tomate');
-        $recette->setDescription('Couper les tomates en rondelles');
-        $recette->setImage('tomate.jpg');
-        $recette->setDifficulty('Facile');
-        $recette->setPreparationTime(10);
-        $recette->setUtensils('Couteau');
-        $recette->setQuantity(1);
-        $recette->setCategoryId(1);
-        $this->assertEquals('Salade de tomate', $recette->getName());
-        $this->assertEquals('Couper les tomates en rondelles', $recette->getDescription());
-        $this->assertEquals('tomate.jpg', $recette->getImage());
-        $this->assertEquals('Facile', $recette->getDifficulty());
-        $this->assertEquals(10, $recette->getPreparationTime());
-        $this->assertEquals('Couteau', $recette->getUtensils());
-        $this->assertEquals(1, $recette->getQuantity());
-        $this->assertEquals(1, $recette->getCategoryId());
-    }
-
-    public function updateRecipeTest(){
+    public function testAjouterRecette(){
         $recette = new Recette();
         $recette->setName('Salade de tomate');
-        $recette->setDescription('Couper les tomates en rondelles');
+        $recette->setDifficulte('Facile');
         $recette->setImage('tomate.jpg');
-        $recette->setDifficulty('Facile');
-        $recette->setPreparationTime(10);
-        $recette->setUtensils('Couteau');
-        $recette->setQuantity(1);
-        $recette->setCategoryId(1);
+        $recette->setTempsPreparation(10);
+        $recette->setUstensiles('Couteau');
+        $recette->setQuantite(1);
+        $recette->setIdCategorie(1);
         $this->assertEquals('Salade de tomate', $recette->getName());
-        $this->assertEquals('Couper les tomates en rondelles', $recette->getDescription());
+        $this->assertEquals('Facile', $recette->getDifficulte());
         $this->assertEquals('tomate.jpg', $recette->getImage());
-        $this->assertEquals('Facile', $recette->getDifficulty());
-        $this->assertEquals(10, $recette->getPreparationTime());
-        $this->assertEquals('Couteau', $recette->getUtensils());
-        $this->assertEquals(1, $recette->getQuantity());
-        $this->assertEquals(1, $recette->getCategoryId());
+        $this->assertEquals(10, $recette->getTempsPreparation());
+        $this->assertEquals('Couteau', $recette->getUstensiles());
+        $this->assertEquals(1, $recette->getQuantite());
+        $this->assertEquals(1, $recette->getIdCategorie());
     }
 
-    public function deleteRecipeTest(){
+    public function testMettreAJourRecette(){
         $recette = new Recette();
         $recette->setName('Salade de tomate');
-        $recette->setDescription('Couper les tomates en rondelles');
+        $recette->setDifficulte('Facile');
         $recette->setImage('tomate.jpg');
-        $recette->setDifficulty('Facile');
-        $recette->setPreparationTime(10);
-        $recette->setUtensils('Couteau');
-        $recette->setQuantity(1);
-        $recette->setCategoryId(1);
+        $recette->setTempsPreparation(10);
+        $recette->setUstensiles('Couteau');
+        $recette->setQuantite(1);
+        $recette->setIdCategorie(1);
         $this->assertEquals('Salade de tomate', $recette->getName());
-        $this->assertEquals('Couper les tomates en rondelles', $recette->getDescription());
+        $this->assertEquals('Facile', $recette->getDifficulte());
         $this->assertEquals('tomate.jpg', $recette->getImage());
-        $this->assertEquals('Facile', $recette->getDifficulty());
-        $this->assertEquals(10, $recette->getPreparationTime());
-        $this->assertEquals('Couteau', $recette->getUtensils());
-        $this->assertEquals(1, $recette->getQuantity());
-        $this->assertEquals(1, $recette->getCategoryId());
+        $this->assertEquals(10, $recette->getTempsPreparation());
+        $this->assertEquals('Couteau', $recette->getUstensiles());
+        $this->assertEquals(1, $recette->getQuantite());
+        $this->assertEquals(1, $recette->getIdCategorie());
     }
 
-    public function getRecipeByCategoryTest(){
+    public function testSupprimerRecette(){
         $recette = new Recette();
         $recette->setName('Salade de tomate');
-        $recette->setDescription('Couper les tomates en rondelles');
+        $recette->setDifficulte('Facile');
         $recette->setImage('tomate.jpg');
-        $recette->setDifficulty('Facile');
-        $recette->setPreparationTime(10);
-        $recette->setUtensils('Couteau');
-        $recette->setQuantity(1);
-        $recette->setCategoryId(1);
+        $recette->setTempsPreparation(10);
+        $recette->setUstensiles('Couteau');
+        $recette->setQuantite(1);
+        $recette->setIdCategorie(1);
         $this->assertEquals('Salade de tomate', $recette->getName());
-        $this->assertEquals('Couper les tomates en rondelles', $recette->getDescription());
+        $this->assertEquals('Facile', $recette->getDifficulte());
         $this->assertEquals('tomate.jpg', $recette->getImage());
-        $this->assertEquals('Facile', $recette->getDifficulty());
-        $this->assertEquals(10, $recette->getPreparationTime());
-        $this->assertEquals('Couteau', $recette->getUtensils());
-        $this->assertEquals(1, $recette->getQuantity());
-        $this->assertEquals(1, $recette->getCategoryId());
+        $this->assertEquals(10, $recette->getTempsPreparation());
+        $this->assertEquals('Couteau', $recette->getUstensiles());
+        $this->assertEquals(1, $recette->getQuantite());
+        $this->assertEquals(1, $recette->getIdCategorie());
     }
 
+    public function testRecettesParCategorie(){
+        $recette = new Recette();
+        $recette->setName('Salade de tomate');
+        $recette->setDifficulte('Facile');
+        $recette->setImage('tomate.jpg');
+        $recette->setTempsPreparation(10);
+        $recette->setUstensiles('Couteau');
+        $recette->setQuantite(1);
+        $recette->setIdCategorie(1);
+        $this->assertEquals('Salade de tomate', $recette->getName());
+        $this->assertEquals('Facile', $recette->getDifficulte());
+        $this->assertEquals('tomate.jpg', $recette->getImage());
+        $this->assertEquals(10, $recette->getTempsPreparation());
+        $this->assertEquals('Couteau', $recette->getUstensiles());
+        $this->assertEquals(1, $recette->getQuantite());
+        $this->assertEquals(1, $recette->getIdCategorie());
+    }
+    
 }
 
 ?>

@@ -18,7 +18,26 @@ class Recette {
     public function getName() {
         return $this->name;
     }
-
+    public function getDifficulte() {
+        return $this->difficulty;
+    }
+    
+    public function getTempsPreparation() {
+        return $this->preparation_time;
+    }
+    
+    public function getUstensiles() {
+        return $this->utensils;
+    }
+    
+    public function getQuantite() {
+        return $this->quantity;
+    }
+    
+    public function getIdCategorie() {
+        return $this->category_id;
+    }
+    
     public function getImage() {
         return $this->image_url;
     }
@@ -54,6 +73,26 @@ class Recette {
     public function setImage($image_url) {
         $this->image_url = $image_url;
     }
+    public function setDifficulte($difficulte) {
+        $this->difficulty = $difficulte;
+    }
+    
+    public function setTempsPreparation($tempsPreparation) {
+        $this->preparation_time = $tempsPreparation;
+    }
+    
+    public function setUstensiles($ustensiles) {
+        $this->utensils = $ustensiles;
+    }
+    
+    public function setQuantite($quantite) {
+        $this->quantity = $quantite;
+    }
+    
+    public function setIdCategorie($idCategorie) {
+        $this->category_id = $idCategorie;
+    }
+    
 
     public function setDifficulty($difficulty) {
         $this->difficulty = $difficulty;
@@ -86,7 +125,7 @@ class RecetteManager {
     public function addRecipe($recette) {
         $requete = $this->pdo->prepare("INSERT INTO recettes (name, image_url, difficulty, preparation_time, utensils, quantity, category_id) VALUES (:name, :image_url, :difficulty, :preparation_time, :utensils, :quantity, :category_id)");
         $requete->bindValue(':name', $recette->getName());
-        $requete->bindValue(':image_url', $recette->getImageUrl());
+        $requete->bindValue(':image_url', $recette->getImage());
         $requete->bindValue(':difficulty', $recette->getDifficulty());
         $requete->bindValue(':preparation_time', $recette->getPreparationTime());
         $requete->bindValue(':utensils', $recette->getUstensils());
@@ -95,6 +134,7 @@ class RecetteManager {
         $requete->execute();
         $recette->setId($this->pdo->lastInsertId());
     }
+    
 
     public function updateRecipe($recette) {
         $requete = $this->pdo->prepare("UPDATE recettes SET name=:name, image_url=:image_url, difficulty=:difficulty, preparation_time=:preparation_time, utensils=:utensils, quantity=:quantity, category_id=:category_id WHERE id=:id");
