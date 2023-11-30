@@ -5,6 +5,7 @@ $host = 'localhost';
 $dbname = 'cookease';
 $username = 'cookeaseUSER';  
 $password = 'azerty'; 
+$port = '3306';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

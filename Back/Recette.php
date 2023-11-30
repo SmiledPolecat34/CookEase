@@ -162,6 +162,13 @@ class RecetteManager {
         $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
         return $resultats;
     }
+    public function getRecipeById($recette_id) {
+        $requete = $this->pdo->prepare("SELECT * FROM recettes WHERE id=:id");
+        $requete->bindValue(':id', $recette_id);
+        $requete->execute();
+        $resultat = $requete->fetchObject('Recette');
+        return $resultat;
+    }
 }
 
 ?>
