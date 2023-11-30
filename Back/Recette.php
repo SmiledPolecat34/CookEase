@@ -31,7 +31,7 @@ class Recette {
         return $this->preparation_time;
     }
 
-    public function getUtensils() {
+    public function getUstensils() {
         return $this->utensils;
     }
 
@@ -89,7 +89,7 @@ class RecetteManager {
         $requete->bindValue(':image_url', $recette->getImageUrl());
         $requete->bindValue(':difficulty', $recette->getDifficulty());
         $requete->bindValue(':preparation_time', $recette->getPreparationTime());
-        $requete->bindValue(':utensils', $recette->getUtensils());
+        $requete->bindValue(':utensils', $recette->getUstensils());
         $requete->bindValue(':quantity', $recette->getQuantity());
         $requete->bindValue(':category_id', $recette->getCategoryId());
         $requete->execute();
@@ -103,7 +103,7 @@ class RecetteManager {
         $requete->bindValue(':image_url', $recette->getImageUrl());
         $requete->bindValue(':difficulty', $recette->getDifficulty());
         $requete->bindValue(':preparation_time', $recette->getPreparationTime());
-        $requete->bindValue(':utensils', $recette->getUtensils());
+        $requete->bindValue(':utensils', $recette->getUstensils());
         $requete->bindValue(':quantity', $recette->getQuantity());
         $requete->bindValue(':category_id', $recette->getCategoryId());
         $requete->execute();
