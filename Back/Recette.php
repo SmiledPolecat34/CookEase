@@ -19,7 +19,7 @@ class Recette {
         return $this->name;
     }
 
-    public function getImageUrl() {
+    public function getImage() {
         return $this->image_url;
     }
 
@@ -51,7 +51,7 @@ class Recette {
         $this->name = $name;
     }
 
-    public function setImageUrl($image_url) {
+    public function setImage($image_url) {
         $this->image_url = $image_url;
     }
 
