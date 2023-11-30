@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+<link rel="stylesheet" href="style.css">
 <head>
     <meta charset="UTF-8">
     <title>Ajouter une recette</title>
@@ -26,7 +27,7 @@
         <label for="quantity">Quantité :</label>
         <input type="text" id="quantity" name="quantity"><br><br>
 
-        <input type="submit" value="Ajouter la recette">
+        <a><input type="submit" value="Ajouter la recette"></a>
     </form>
 </body>
 </html>
