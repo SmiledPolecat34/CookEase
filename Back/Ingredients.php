@@ -74,5 +74,6 @@ class Ingredients{
         
         public function update() {
             $sql = "UPDATE ingredients SET nom = :nom, quantite = :quantite, unite = :unite WHERE id = :id";
+        }
 }
 ?>
