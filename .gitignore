@@ -1,0 +1,10 @@
+/composer.json
+/composer.lock
+/config.php
+/Id.php
+/node_modules
+/package-lock.json
+/package.json
+/phpunit.xml
+/txt
+/vendor
