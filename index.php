@@ -2,17 +2,17 @@
 <link rel="stylesheet" href="style.css">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Recettes</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <title>Recettes</title>
+    </head>
+    <body>
+
     <h1>Liste des recettes</h1>
     
     <a href="AjouterUneRecette.php">Ajouter une recette</a>
     
     <?php
-    // Inclure ici les fichiers Recette.php, Categorie.php, Ingredient.php et RecetteIngredient.php
     require_once('./Back/Recette.php');
     require_once('./Back/Categorie.php');
     require_once('./Back/Ingredient.php');
@@ -50,9 +50,9 @@
     }
     
     ?>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-</body>
+    </body>
 </html>

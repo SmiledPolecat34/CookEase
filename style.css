@@ -2,8 +2,12 @@
 body {
     background-color: #000;
     color: #fff; 
-    font-family: 'VotrePoliceAttrayante', sans-serif; /* Remplacez 'VotrePoliceAttrayante' par le nom de votre police */
+    font-family: 'VotrePoliceAttrayante', sans-serif;
 }
+html{
+    background-color: #000;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -16,7 +20,7 @@ h1 {
     margin-bottom: 20px;
     text-align: center;
     text-transform: uppercase;
-    color: rgb(255, 0, 0);
+    color: rgb(0, 0, 0);
 }
 
 a {
@@ -31,7 +35,7 @@ a {
 }
 
 a:hover {
-    background-color: #b92929;
+    background-color: #000000;
 }
 
 .recipe {
