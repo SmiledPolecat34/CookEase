@@ -11,11 +11,11 @@
     
     <?php
     // Inclure ici les fichiers Recette.php, Categorie.php, Ingredient.php et RecetteIngredient.php
-    require_once('Back/Recette.php');
-    require_once('Back/Categorie.php');
-    require_once('Back/Ingredient.php');
-    require_once('Back/RecetteIngredient.php'); 
-    require_once('config.php');
+    require_once('/Back/Recette.php');
+    require_once('/Back/Categorie.php');
+    require_once('/Back/Ingredient.php');
+    require_once('/Back/RecetteIngredient.php'); 
+    require_once('/config.php');
     
     // Connexion à la base de données (à remplir avec tes informations de connexion)
     $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
