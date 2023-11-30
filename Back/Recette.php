@@ -52,8 +52,26 @@ class Recette {
     }
 
     public function setImage($image_url) {
-        $this->image_url = $image_url;
+        if (!empty($image_url)) {
+            if (filter_var($image_url, FILTER_VALIDATE_URL)) {
+                // Si c'est une URL valide, stocke directement l'URL
+                $this->image_url = $image_url;
+            } else {
+                // Si le chemin local existe, considère-le comme une URL valide
+                if (file_exists($image_url)) {
+                    $this->image_url = $image_url;
+                } else {
+                    // Si le chemin local n'existe pas, traite-le comme une valeur nulle
+                    $this->image_url = null;
+                }
+            }
+        } else {
+            // Gère le cas où aucune URL n'est fournie
+            $this->image_url = null; // Ou définit un autre comportement par défaut si nécessaire
+        }
     }
+    
+    
 
     public function setDifficulty($difficulty) {
         $this->difficulty = $difficulty;
@@ -86,7 +104,7 @@ class RecetteManager {
     public function addRecipe($recette) {
         $requete = $this->pdo->prepare("INSERT INTO recettes (name, image_url, difficulty, preparation_time, utensils, quantity, category_id) VALUES (:name, :image_url, :difficulty, :preparation_time, :utensils, :quantity, :category_id)");
         $requete->bindValue(':name', $recette->getName());
-        $requete->bindValue(':image_url', $recette->getImageUrl());
+        $requete->bindValue(':image_url', $recette->getImage());
         $requete->bindValue(':difficulty', $recette->getDifficulty());
         $requete->bindValue(':preparation_time', $recette->getPreparationTime());
         $requete->bindValue(':utensils', $recette->getUstensils());
@@ -100,7 +118,7 @@ class RecetteManager {
         $requete = $this->pdo->prepare("UPDATE recettes SET name=:name, image_url=:image_url, difficulty=:difficulty, preparation_time=:preparation_time, utensils=:utensils, quantity=:quantity, category_id=:category_id WHERE id=:id");
         $requete->bindValue(':id', $recette->getId());
         $requete->bindValue(':name', $recette->getName());
-        $requete->bindValue(':image_url', $recette->getImageUrl());
+        $requete->bindValue(':image_url', $recette->getImage());
         $requete->bindValue(':difficulty', $recette->getDifficulty());
         $requete->bindValue(':preparation_time', $recette->getPreparationTime());
         $requete->bindValue(':utensils', $recette->getUstensils());

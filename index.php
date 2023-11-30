@@ -9,6 +9,8 @@
     <h1>Liste des recettes</h1>
     
     <a href="AjouterUneRecette.php">Ajouter une recette</a>
+    <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
+    <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
     
     <?php
     // Inclure ici les fichiers Recette.php, Categorie.php, Ingredient.php et RecetteIngredient.php
@@ -33,12 +35,9 @@
         echo '<div>';
         echo '<h2>' . $recette->getName() . '</h2>';
         echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
-        echo '<p>Difficulté : ' . $recette->getDifficulty() . '</p>';
-        echo '<p>Temps de préparation : ' . $recette->getPreparationTime() . ' minutes</p>';
-        echo '<p>Ustensiles : ' . $recette->getUtensils() . '</p>';
-        echo '<p>Quantité : ' . $recette->getQuantity() . '</p>';
         echo '</div>';
     }
     ?>
+
 </body>
 </html>
