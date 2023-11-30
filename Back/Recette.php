@@ -1,123 +1,126 @@
 <?php
-
-require_once ('Serveur.php');
-require_once ('Ingredients.php');
+// Recette.php
 
 class Recette {
-        
     private $id;
-    private $nom;
-    private $description;
-    private $image;
-    private $ingredients;
-    private $etapes;
-    private $pdo;
-    
-    public function __construct($nom, $description, $image, $ingredients, $etapes, $pdo) {
-        $this->nom = $nom;
-        $this->description = $description;
-        $this->image = $image;
-        $this->ingredients = $ingredients;
-        $this->etapes = $etapes;
-        $this->pdo = $pdo;
-    }
-    
+    private $name;
+    private $image_url;
+    private $difficulty;
+    private $preparation_time;
+    private $utensils;
+    private $quantity;
+    private $category_id;
+
     public function getId() {
         return $this->id;
     }
-    
-    public function getNom() {
-        return $this->nom;
+
+    public function getName() {
+        return $this->name;
     }
-    
-    public function getDescription() {
-        return $this->description;
+
+    public function getImageUrl() {
+        return $this->image_url;
     }
-    
-    public function getImage() {
-        return $this->image;
+
+    public function getDifficulty() {
+        return $this->difficulty;
     }
-    
-    public function getIngredients() {
-        return $this->ingredients;
+
+    public function getPreparationTime() {
+        return $this->preparation_time;
     }
-    
-    public function getEtapes() {
-        return $this->etapes;
+
+    public function getUtensils() {
+        return $this->utensils;
     }
-    
-    public function getServeur() {
-        return $this->serveur;
+
+    public function getQuantity() {
+        return $this->quantity;
     }
-    
+
+    public function getCategoryId() {
+        return $this->category_id;
+    }
+
     public function setId($id) {
         $this->id = $id;
     }
-    
-    public function setNom($nom) {
-        $this->nom = $nom;
+
+    public function setName($name) {
+        $this->name = $name;
     }
-    
-    public function setDescription($description) {
-        $this->description = $description;
+
+    public function setImageUrl($image_url) {
+        $this->image_url = $image_url;
     }
-    
-    public function setImage($image) {
-        $this->image = $image;
+
+    public function setDifficulty($difficulty) {
+        $this->difficulty = $difficulty;
     }
-    
-    public function setIngredients($ingredients) {
-        $this->ingredients = $ingredients;
+
+    public function setPreparationTime($preparation_time) {
+        $this->preparation_time = $preparation_time;
     }
-    
-    public function setEtapes($etapes) {
-        $this->etapes = $etapes;
+
+    public function setUtensils($utensils) {
+        $this->utensils = $utensils;
     }
-    
-    public function setServeur($serveur) {
-        $this->serveur = $serveur;
+
+    public function setQuantity($quantity) {
+        $this->quantity = $quantity;
     }
-    
+
+    public function setCategoryId($category_id) {
+        $this->category_id = $category_id;
+    }
 }
 
-class RecetteManager{
-        
+class RecetteManager {
     private $pdo;
-    
+
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
-    
+
     public function addRecipe($recette) {
-        $requete = $this->pdo->prepare("INSERT INTO recettes (name, image, ingredients, etapes) VALUES (:nom, :description, :image, :ingredients, :etapes)");
-        $requete->bindValue(':nom', $recette->getNom());
-        $requete->bindValue(':image', $recette->getImage());
-        $requete->bindValue(':ingredients', $recette->getIngredients());
-        $requete->bindValue(':etapes', $recette->getEtapes());
+        $requete = $this->pdo->prepare("INSERT INTO recettes (name, image_url, difficulty, preparation_time, utensils, quantity, category_id) VALUES (:name, :image_url, :difficulty, :preparation_time, :utensils, :quantity, :category_id)");
+        $requete->bindValue(':name', $recette->getName());
+        $requete->bindValue(':image_url', $recette->getImageUrl());
+        $requete->bindValue(':difficulty', $recette->getDifficulty());
+        $requete->bindValue(':preparation_time', $recette->getPreparationTime());
+        $requete->bindValue(':utensils', $recette->getUtensils());
+        $requete->bindValue(':quantity', $recette->getQuantity());
+        $requete->bindValue(':category_id', $recette->getCategoryId());
         $requete->execute();
         $recette->setId($this->pdo->lastInsertId());
     }
-    
+
+    public function updateRecipe($recette) {
+        $requete = $this->pdo->prepare("UPDATE recettes SET name=:name, image_url=:image_url, difficulty=:difficulty, preparation_time=:preparation_time, utensils=:utensils, quantity=:quantity, category_id=:category_id WHERE id=:id");
+        $requete->bindValue(':id', $recette->getId());
+        $requete->bindValue(':name', $recette->getName());
+        $requete->bindValue(':image_url', $recette->getImageUrl());
+        $requete->bindValue(':difficulty', $recette->getDifficulty());
+        $requete->bindValue(':preparation_time', $recette->getPreparationTime());
+        $requete->bindValue(':utensils', $recette->getUtensils());
+        $requete->bindValue(':quantity', $recette->getQuantity());
+        $requete->bindValue(':category_id', $recette->getCategoryId());
+        $requete->execute();
+    }
+
     public function deleteRecipe($recette) {
         $requete = $this->pdo->prepare("DELETE FROM recettes WHERE id=:id");
         $requete->bindValue(':id', $recette->getId());
         $requete->execute();
     }
-    
-    public function getAllRecipes() {
-        $requete = $this->pdo->prepare("SELECT * FROM recettes");
+
+    public function getRecipesByCategory($category_id) {
+        $requete = $this->pdo->prepare("SELECT * FROM recettes WHERE category_id=:category_id");
+        $requete->bindValue(':category_id', $category_id);
         $requete->execute();
-        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette', array($this->pdo));
+        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
         return $resultats;
-    }
-    
-    public function getRecetteById($id) {
-        $requete = $this->pdo->prepare("SELECT * FROM recette WHERE id=:id");
-        $requete->bindValue(':id', $id);
-        $requete->execute();
-        $requete->setFetchMode(PDO::FETCH_CLASS, 'Recette', array($this->pdo));
-        $recette = $requete->fetch();
-        return $recette;
     }
 }
 
