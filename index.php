@@ -62,7 +62,17 @@ $recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
                     echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
                     echo '<p> Difficulté : ' . $recette->getDifficulty() . '</p>';
                     echo '</a>';
-                    echo '</div>';
+                                
+                    // Formulaire de suppression
+    echo '<form method="post">';
+    echo '<input type="hidden" name="recipe_id" value="' . $recette->getId() . '">';
+    echo '<input type="submit" name="delete_recipe" value="Supprimer">';
+    echo '</form>';
+    
+    echo '</div>';
+
+
+
                 }
             } else {
                 echo '<p>Aucune recette trouvée pour votre recherche.</p>';

@@ -163,6 +163,7 @@ class RecetteManager {
         $requete->bindValue(':id', $recette->getId());
         $requete->execute();
     }
+    
 
     public function getRecipesByCategory($category_id) {
         $requete = $this->pdo->prepare("SELECT * FROM recettes WHERE category_id=:category_id");

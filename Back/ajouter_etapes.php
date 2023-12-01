@@ -4,7 +4,7 @@ require_once('config.php'); // Inclus ton fichier de configuration
 class Etape {
     private $id;
     private $recipe_id;
-    private $steps;
+    private $etape;
 
     public function getId() {
         return $this->id;
@@ -14,8 +14,8 @@ class Etape {
         return $this->recipe_id;
     }
 
-    public function getSteps() {
-        return $this->steps;
+    public function getEtape() {
+        return $this->etape;
     }
 
     public function setId($id) {
@@ -26,8 +26,8 @@ class Etape {
         $this->recipe_id = $recipe_id;
     }
 
-    public function setSteps($steps) {
-        $this->steps = $steps;
+    public function setEtape($etape) {
+        $this->etape = $etape;
     }
 }
 
@@ -38,9 +38,9 @@ class EtapeManager{
         $this->pdo = $pdo;
     }
 
-    public function addSteps($recipe_id, $steps) {
-        $stmt = $this->pdo->prepare("UPDATE recettes SET etape = :steps WHERE id = :id");
-        $stmt->bindParam(':steps', $steps);
+    public function addEtape($recipe_id, $etape) {
+        $stmt = $this->pdo->prepare("UPDATE recettes SET etape = :etape WHERE id = :id");
+        $stmt->bindParam(':etape', $etape);
         $stmt->bindParam(':id', $recipe_id);
         $stmt->execute();
 
@@ -48,13 +48,13 @@ class EtapeManager{
         $recipe_id = $this->pdo->lastInsertId();
     }
 
-    public function getStepsByRecipeId($recipe_id) {
-        $sql = 'SELECT etape FROM recettes WHERE id = :recipe_id';
+    public function getEtapeByRecipeId($recipe_id) {
+        $sql = 'SELECT etape FROM recettes WHERE id = :id';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['recipe_id' => $recipe_id]);
+        $stmt->execute(['id' => $recipe_id]);
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'etape');
-        $steps = $stmt->fetchAll();
-        return $steps;
+        $etape = $stmt->fetchAll();
+        return $etape;
     }
 }
 
@@ -62,20 +62,20 @@ class EtapeManager{
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Récupération des données du formulaire
     $recipe_id = $_POST['recipe_id'] ?? '';
-    $steps = $_POST['steps'] ?? '';
+    $etape = $_POST['etape'] ?? '';
 
     // Création d'une instance d'Étape
     $etape = new Etape();
     $etape->setRecipeId($recipe_id);
-    $etape->setSteps($steps);
+    $etape->setEtape($etape);
 
     try {
         // Connexion à la base de données
         $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $port, $username, $password);
         
         // Insertion des étapes dans la base de données 
-        $stmt = $pdo->prepare("INSERT INTO recettes (etape) VALUES (:steps) WHERE id = :id");
-        $stmt->bindParam(':steps', $etape->getSteps());
+        $stmt = $pdo->prepare("INSERT INTO recettes (etape) VALUES (:etape) WHERE id = :id");
+        $stmt->bindParam(':etape', $etape->getEtape());
         $stmt->bindParam(':id', $etape->getRecipeId());
         $stmt->execute();
 

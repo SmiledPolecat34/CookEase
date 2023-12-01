@@ -38,13 +38,31 @@
                 // Numérotation de l'étape en fonction du nombre d'éléments dans la liste actuelle
                 const stepNumber = document.getElementById('step_list').getElementsByTagName('li').length + 1;
                 newStep.textContent = `${stepNumber}. ${stepDesc}`; // Utilisation du numéro et de la description de l'étape saisie
-
+                console.log(newStep.textContent);
                 // Ajout de l'élément <li> à la liste des étapes
                 const stepList = document.getElementById('step_list');
                 stepList.appendChild(newStep);
 
-                // Réinitialisation du champ pour la description de l'étape après l'ajout
-                stepDescInput.value = '';
+                // récupération de l'ensemble des étapes
+                const steps = document.getElementById('step_list').getElementsByTagName('li');
+                const stepData = [];
+                for (let i = 0; i < steps.length; i++) {
+                    stepData.push(steps[i].textContent);
+                }
+
+                // Stockage des étapes au format JSON dans le champ caché
+                const stepDataInput = document.getElementById('step_data');
+                stepDataInput.value = JSON.stringify(stepData);
+
+                // Remise à zéro du champ pour la description de l'étape
+                stepDescInput.value = '';   
+
+                // Incrémentation du compteur d'étapes
+                stepCounter++;
+
+                // Affichage du compteur d'étapes
+                const stepCounterElement = document.getElementById('step_counter');
+                stepCounterElement.textContent = stepCounter;
             }
         }
     </script>
@@ -120,6 +138,8 @@
 
         <!-- Champ pour écrire la description de l'étape -->
         <input type="text" id="step_description" placeholder="Description de l'étape">
+
+        <span id="step_counter"></span>
 
         <!-- Votre bouton "Ajouter étape" -->
         <button type="button" onclick="addStep()">Ajouter une étape</button>
