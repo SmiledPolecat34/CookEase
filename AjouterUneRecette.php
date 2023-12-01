@@ -34,6 +34,23 @@
             imageUrlInput.value = '';
             deleteFileButton.style.display = 'none';
         }
+
+        function addIngredientToList() {
+            var ingredientList = document.getElementById('ingredient_list');
+            var selectedIngredients = [];
+            for (var i = 0; i < ingredientList.options.length; i++) {
+                if (ingredientList.options[i].selected) {
+                    selectedIngredients.push(ingredientList.options[i].text);
+                }
+            }
+
+            var ingredientTable = document.getElementById('ingredient_table');
+            for (var i = 0; i < selectedIngredients.length; i++) {
+                var newRow = ingredientTable.insertRow(ingredientTable.rows.length);
+                var cell = newRow.insertCell(0);
+                cell.innerHTML = selectedIngredients[i];
+            }
+        }
     </script>
 </head>
 <body>
@@ -63,28 +80,6 @@
         <label for="quantity">Nombre de personnes :</label>
         <input type="text" id="quantity" name="quantity"><br><br>
 
-        <label for="ingredient_list">Sélectionner les ingrédients :</label>
-<select id="ingredient_list" name="ingredient_list[]" multiple>
-    <?php
-    // Connexion à la base de données et récupération des ingrédients
-    require_once('config.php');
-    require_once('Back/Ingredient.php');
-
-    $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $port, $username, $password);
-    $ingredientManager = new IngredientManager($pdo);
-
-    // Récupération de tous les ingrédients depuis la base de données
-    $ingredients = $ingredientManager->getAllIngredients();
-
-    // Affichage des ingrédients dans la liste déroulante
-    foreach ($ingredients as $ingredient) {
-        echo '<option value="' . $ingredient->getId() . '">' . $ingredient->getName() . '</option>';
-        // Si l'ingrédient est sélectionné, ajoute l'attribut "selected" à l'option
-    }
-    ?>
-</select><br><br>
-
-
         <label for="category_id">Catégorie :</label>
         <select id="category_id" name="category_id">
             <option value="1">Entrée</option>
@@ -95,12 +90,38 @@
             <option value="6">Accompagnement</option>
         </select><br><br>
 
+        <label for="ingredient_list">Sélectionner les ingrédients :</label>
+        <select id="ingredient_list" name="ingredient_list[]" multiple>
+        <?php
+        // Connexion à la base de données et récupération des ingrédients
+        require_once('config.php');
+        require_once('Back/Ingredient.php');
+
+        $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $port, $username, $password);
+        $ingredientManager = new IngredientManager($pdo);
+
+        // Récupération de tous les ingrédients depuis la base de données
+        $ingredients = $ingredientManager->getAllIngredients();
+
+        // Affichage des ingrédients dans la liste déroulante
+        foreach ($ingredients as $ingredient) {
+            echo '<option value="' . $ingredient->getId() . '">' . $ingredient->getName() . '</option>';
+            // Si l'ingrédient est sélectionné, ajoute l'attribut "selected" à l'option
+        }
+        ?>
+        </select><br><br>
+        
+        <button type="button" onclick="addIngredientToList()">Ajouter l'ingrédient</button>
+        
+        <table id="ingredient_table" border="1" style="margin-top: 20px;">
+            <tr>
+                <th>Ingrédients ajoutés</th>
+            </tr>
+        </table>
+
+        
+
         <input type="submit" value="Ajouter la recette">
-    <!-- </form>
-    <form action="recherche_ingredients.php" method="get">
-        <label for="search">Rechercher un ingrédient :</label>
-        <input type="text" id="search" name="search">
-        <input type="submit" value="Rechercher">
-    </form> -->
+    </form>
 </body>
 </html>

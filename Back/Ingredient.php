@@ -46,6 +46,6 @@ class IngredientManager {
         return $ingredients;
     }
 }
-
+    
 ?>
 

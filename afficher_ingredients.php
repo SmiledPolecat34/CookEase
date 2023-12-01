@@ -23,7 +23,15 @@ if (isset($_GET['recipe_id'])) {
         echo '<li>' . $ingredient->getName() . '</li>';
     }
     echo '</ul>';
-} else {
+    // Affichage des étapes de préparation
+    echo '<h1>Étapes de préparation</h1>';
+    echo '<ol>';
+    foreach ($etapes as $etape) {
+        echo '<li>' . $etape->getStep() . '</li>';
+    }
+    echo '</ol>';
+    } else {
     echo 'ID de recette non spécifié.';
-}
+    }
+
 ?>

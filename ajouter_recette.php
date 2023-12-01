@@ -1,5 +1,4 @@
 <?php
-
 // Ajouter_recette.php
 require_once('Back/Recette.php'); // Assure-toi de l'inclure ici
 require_once('config.php'); // Inclus ton fichier de configuration
@@ -13,7 +12,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $preparation_time = $_POST['preparation_time'] ?? '';
     $ustensils = $_POST['utensils'] ?? '';
     $quantity = $_POST['quantity'] ?? '';
-    $category_id = $_POST['category_id'] ?? ''; // Récupération de la catégorie choisie
+    $category_id = $_POST['category_id'] ?? '';
+    $ingredient_list = $_POST['ingredient_list'] ?? '';
 
     // Création d'une instance de Recette
     $recette = new Recette();
@@ -23,7 +23,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $recette->setPreparationTime($preparation_time);
     $recette->setUstensils($ustensils);
     $recette->setQuantity($quantity);
-    $recette->setCategoryId($category_id); // Associe la catégorie à la recette
+    $recette->setCategoryId($category_id);
+    $recette->setIngredientList($ingredient_list);
 
     try {
         // Connexion à la base de données

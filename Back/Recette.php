@@ -10,6 +10,7 @@ class Recette {
     private $utensils;
     private $quantity;
     private $category_id;
+    private $ingredient_list;
 
     public function getId() {
         return $this->id;
@@ -41,6 +42,10 @@ class Recette {
 
     public function getCategoryId() {
         return $this->category_id;
+    }
+
+    public function getIngredientList() {
+        return $this->ingredient_list;
     }
 
     public function setId($id) {
@@ -92,6 +97,10 @@ class Recette {
     public function setCategoryId($category_id) {
         $this->category_id = $category_id;
     }
+
+    public function setIngredientList($ingredient_list) {
+        $this->ingredient_list = $ingredient_list;
+    }
 }
 
 class RecetteManager {
@@ -112,6 +121,12 @@ class RecetteManager {
         $requete->bindValue(':category_id', $recette->getCategoryId());
         $requete->execute();
         $recette->setId($this->pdo->lastInsertId());
+        $requete = $this->pdo->prepare("INSERT INTO recette_ingredient (recette_id, ingredient_id) VALUES (:recette_id, :ingredient_id)");
+        foreach ($recette->getIngredientList() as $ingredient_id) {
+            $requete->bindValue(':recette_id', $recette->getId());
+            $requete->bindValue(':ingredient_id', $ingredient_id);
+            $requete->execute();
+        }
     }
 
     public function updateRecipe($recette) {
