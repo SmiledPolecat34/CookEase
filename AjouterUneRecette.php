@@ -5,36 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ajouter une recette</title>
-    <!-- Ajoute ici tes liens vers des fichiers CSS ou des CDN pour le style -->
     <script>
-        function handleFileInputChange() {
-            const fileInput = document.getElementById('image_file');
-            const imageUrlInput = document.getElementById('image_url');
-            const deleteFileButton = document.getElementById('delete_file_button');
-
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    imageUrlInput.value = e.target.result;
-                };
-
-                reader.readAsDataURL(fileInput.files[0]);
-                deleteFileButton.style.display = 'inline'; // Affiche le bouton "Supprimer"
-            }
-        }
-
-        function deleteSelectedFile() {
-            const fileInput = document.getElementById('image_file');
-            const imageUrlInput = document.getElementById('image_url');
-            const deleteFileButton = document.getElementById('delete_file_button');
-
-            // Réinitialise les champs et cache le bouton "Supprimer"
-            fileInput.value = '';
-            imageUrlInput.value = '';
-            deleteFileButton.style.display = 'none';
-        }
-
         function addIngredientToList() {
             var ingredientList = document.getElementById('ingredient_list');
             var selectedIngredients = [];
@@ -51,6 +22,30 @@
                 cell.innerHTML = selectedIngredients[i];
             }
         }
+
+        let stepCounter = 1; // Initialisation du compteur d'étapes
+
+         // Fonction pour ajouter une étape
+         function addStep() {
+            const stepDescInput = document.getElementById('step_description');
+            const stepDesc = stepDescInput.value.trim(); // Récupère la valeur du champ pour la description de l'étape
+
+            if (stepDesc !== '') {
+                // Création d'un nouvel élément <li> pour l'étape avec la description
+                const newStep = document.createElement('li');
+                
+                // Numérotation de l'étape en fonction du nombre d'éléments dans la liste actuelle
+                const stepNumber = document.getElementById('step_list').getElementsByTagName('li').length + 1;
+                newStep.textContent = `${stepNumber}. ${stepDesc}`; // Utilisation du numéro et de la description de l'étape saisie
+
+                // Ajout de l'élément <li> à la liste des étapes
+                const stepList = document.getElementById('step_list');
+                stepList.appendChild(newStep);
+
+                // Réinitialisation du champ pour la description de l'étape après l'ajout
+                stepDescInput.value = '';
+            }
+        }
     </script>
 </head>
 <body>
@@ -62,11 +57,6 @@
 
         <label for="image">Image :</label>
         <input type="text" id="image_url" name="image_url" placeholder="URL de l'image"><br><br>
-
-        <input type="file" id="image_file" name="image_file" onchange="handleFileInputChange()"><br><br>
-
-        <!-- Bouton pour supprimer la sélection du fichier -->
-        <button type="button" id="delete_file_button" style="display: none;" onclick="deleteSelectedFile()">Supprimer</button><br><br>
 
         <label for="difficulty">Difficulté :</label>
         <input type="text" id="difficulty" name="difficulty"><br><br>
@@ -92,6 +82,7 @@
 
         <label for="ingredient_list">Sélectionner les ingrédients :</label>
         <select id="ingredient_list" name="ingredient_list[]" multiple>
+            
         <?php
         // Connexion à la base de données et récupération des ingrédients
         require_once('config.php');
@@ -119,7 +110,20 @@
             </tr>
         </table>
 
-        
+        <!-- Champ caché pour stocker les étapes au format JSON -->
+        <input type="hidden" id="step_data" name="etape" />
+
+        <!-- Champ pour écrire le nom de l'étape -->
+        <!-- <input type="text" id="step_name" placeholder="Nom de l'étape"> -->
+
+        <!-- Champ pour écrire la description de l'étape -->
+        <input type="text" id="step_description" placeholder="Description de l'étape">
+
+        <!-- Votre bouton "Ajouter étape" -->
+        <button type="button" onclick="addStep()">Ajouter une étape</button>
+
+        <!-- Liste des étapes -->
+        <ol id="step_list"></ol>
 
         <input type="submit" value="Ajouter la recette">
     </form>

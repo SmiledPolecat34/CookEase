@@ -3,18 +3,21 @@
 if (isset($_GET['recipe_id'])) {
     $recipe_id = $_GET['recipe_id'];
 
-    // Ici, tu devrais te connecter à ta base de données et récupérer les ingrédients associés à cette recette en utilisant l'ID
-
-    // Exemple de connexion à la base de données et récupération des ingrédients
+    // Exemple de connexion à la base de données et récupération des ingrédients et des étapes de préparation
     require_once('config.php');
-    require_once('Back/Ingredient.php'); // Assurez-vous que le chemin est correct
+    require_once('Back/Ingredient.php');
     require_once('Back/RecetteIngredient.php');
+    require_once('Back/ajouter_etapes.php');
 
     $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
     $ingredientManager = new IngredientManager($pdo);
+    $etapeManager = new EtapeManager($pdo);
 
     // Récupération des ingrédients associés à la recette en fonction de son ID
     $ingredients = $ingredientManager->getIngredientsByRecipeId($recipe_id);
+
+    // Récupération des étapes de préparation associées à la recette en fonction de son ID
+    $steps = $etapeManager->getStepsByRecipeId($recipe_id);
 
     // Affichage des ingrédients
     echo '<h1>Ingrédients pour la recette</h1>';
@@ -23,15 +26,15 @@ if (isset($_GET['recipe_id'])) {
         echo '<li>' . $ingredient->getName() . '</li>';
     }
     echo '</ul>';
+
     // Affichage des étapes de préparation
     echo '<h1>Étapes de préparation</h1>';
     echo '<ol>';
-    foreach ($etapes as $etape) {
-        echo '<li>' . $etape->getStep() . '</li>';
+    foreach ($steps as $step) {
+        echo '<li>' . $step->getSteps() . '</li>';
     }
     echo '</ol>';
-    } else {
+} else {
     echo 'ID de recette non spécifié.';
-    }
-
+}
 ?>
