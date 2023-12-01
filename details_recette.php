@@ -4,7 +4,7 @@ require_once('./Back/Recette.php');
 require_once('./Back/Categorie.php');
 require_once('./Back/Ingredient.php');
 require_once('./Back/RecetteIngredient.php'); 
-require_once('./Tests/config.php');
+require_once('config.php');
 
 try {
     // Connexion à la base de données

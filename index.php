@@ -1,54 +1,63 @@
+<?php
+require_once('config.php');
+require_once('Back/Recette.php');
+
+$pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
+$recetteManager = new RecetteManager($pdo);
+
+$recettes = $recetteManager->getAllRecipes();
+
+// Formatage des recettes pour éviter les problèmes avec les guillemets
+$recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
+
+?>
+
 <!DOCTYPE html>
-<link rel="stylesheet" href="style.css">
-
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <title>Recettes</title>
-    </head>
-    <body>
 
-    <h1>Liste des recettes</h1>
-    
-    <a href="AjouterUneRecette.php">Ajouter une recette</a>
-    
-    <?php
-    require_once('./Back/Recette.php');
-    require_once('./Back/Categorie.php');
-    require_once('./Back/Ingredient.php');
-    require_once('./Back/RecetteIngredient.php'); 
-    require_once('./Tests/config.php');
-    
-    try {
-        // Connexion à la base de données
-        $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    } catch (PDOException $e) {
-        echo 'Erreur de connexion : ' . $e->getMessage();
-        exit();
-    }
+<head>
+    <meta charset="UTF-8">
+    <title>Recettes</title>
+    <link rel="stylesheet" href="index.css">
 
-    // Création d'une instance de RecetteManager
-    $recetteManager = new RecetteManager($pdo);
-    
-    $category_id = 1; // À adapter selon ta logique
-    // Récupération de toutes les recettes
-    $recettes = $recetteManager->getRecipesByCategory($category_id); // À adapter selon ta logique
-    
-    // Affichage des recettes
-    foreach ($recettes as $recette) {
-        echo '<div class="card mb-3">';
-        echo '<img src="' . $recette->getImage() . '" class="card-img-top" alt="' . $recette->getName() . '">';
-        echo '<div class="card-body">';
-        echo '<h5 class="card-title">' . $recette->getName() . '</h5>';
-        echo '<p class="card-text">Difficulté : ' . $recette->getDifficulty() . '</p>';
-        echo '<p class="card-text">Temps de préparation : ' . $recette->getPreparationTime() . ' minutes</p>';
-        echo '<p class="card-text">Ustensiles : ' . $recette->getUstensils() . '</p>';
-        echo '<p class="card-text">Quantité : ' . $recette->getQuantity() . '</p>';
-        echo '</div>';
-        echo '</div>';
-    }
-    
-    ?>
-    </body>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Liste des recettes</h1>
+
+        <a href="AjouterUneRecette.php">Ajouter une recette</a>
+        <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
+        <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
+
+        <?php
+        if (empty($recettes)) {
+            echo '<div class="spinner">';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '<div></div>';
+            echo '</div>';
+        } else {
+            echo '<div id="recipes-container">';
+            foreach ($recettes as $recette) {
+                echo '<div class="recipe">';
+                echo '<a class="recipe-link" href="afficher_ingredients.php?recipe_id=' . $recette->getId() . '">';
+                echo '<h2>' . $recette->getName() . '</h2>';
+                echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
+                echo '</a>';
+                echo '</div>';
+            }
+            echo '</div>';
+        }
+        ?>
+    </div>
+</body>
+
 </html>

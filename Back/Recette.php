@@ -10,6 +10,7 @@ class Recette {
     private $utensils;
     private $quantity;
     private $category_id;
+    private $ingredient_list;
 
     public function getId() {
         return $this->id;
@@ -18,26 +19,7 @@ class Recette {
     public function getName() {
         return $this->name;
     }
-    public function getDifficulte() {
-        return $this->difficulty;
-    }
-    
-    public function getTempsPreparation() {
-        return $this->preparation_time;
-    }
-    
-    public function getUstensiles() {
-        return $this->utensils;
-    }
-    
-    public function getQuantite() {
-        return $this->quantity;
-    }
-    
-    public function getIdCategorie() {
-        return $this->category_id;
-    }
-    
+
     public function getImage() {
         return $this->image_url;
     }
@@ -62,6 +44,10 @@ class Recette {
         return $this->category_id;
     }
 
+    public function getIngredientList() {
+        return $this->ingredient_list;
+    }
+
     public function setId($id) {
         $this->id = $id;
     }
@@ -71,27 +57,25 @@ class Recette {
     }
 
     public function setImage($image_url) {
-        $this->image_url = $image_url;
-    }
-    public function setDifficulte($difficulte) {
-        $this->difficulty = $difficulte;
+        if (!empty($image_url)) {
+            if (filter_var($image_url, FILTER_VALIDATE_URL)) {
+                // Si c'est une URL valide, stocke directement l'URL
+                $this->image_url = $image_url;
+            } else {
+                // Si le chemin local existe, considère-le comme une URL valide
+                if (file_exists($image_url)) {
+                    $this->image_url = $image_url;
+                } else {
+                    // Si le chemin local n'existe pas, traite-le comme une valeur nulle
+                    $this->image_url = null;
+                }
+            }
+        } else {
+            // Gère le cas où aucune URL n'est fournie
+            $this->image_url = null; // Ou définit un autre comportement par défaut si nécessaire
+        }
     }
     
-    public function setTempsPreparation($tempsPreparation) {
-        $this->preparation_time = $tempsPreparation;
-    }
-    
-    public function setUstensiles($ustensiles) {
-        $this->utensils = $ustensiles;
-    }
-    
-    public function setQuantite($quantite) {
-        $this->quantity = $quantite;
-    }
-    
-    public function setIdCategorie($idCategorie) {
-        $this->category_id = $idCategorie;
-    }
     
 
     public function setDifficulty($difficulty) {
@@ -113,6 +97,10 @@ class Recette {
     public function setCategoryId($category_id) {
         $this->category_id = $category_id;
     }
+
+    public function setIngredientList($ingredient_list) {
+        $this->ingredient_list = $ingredient_list;
+    }
 }
 
 class RecetteManager {
@@ -133,14 +121,19 @@ class RecetteManager {
         $requete->bindValue(':category_id', $recette->getCategoryId());
         $requete->execute();
         $recette->setId($this->pdo->lastInsertId());
+        $requete = $this->pdo->prepare("INSERT INTO recette_ingredient (recette_id, ingredient_id) VALUES (:recette_id, :ingredient_id)");
+        foreach ($recette->getIngredientList() as $ingredient_id) {
+            $requete->bindValue(':recette_id', $recette->getId());
+            $requete->bindValue(':ingredient_id', $ingredient_id);
+            $requete->execute();
+        }
     }
-    
 
     public function updateRecipe($recette) {
         $requete = $this->pdo->prepare("UPDATE recettes SET name=:name, image_url=:image_url, difficulty=:difficulty, preparation_time=:preparation_time, utensils=:utensils, quantity=:quantity, category_id=:category_id WHERE id=:id");
         $requete->bindValue(':id', $recette->getId());
         $requete->bindValue(':name', $recette->getName());
-        $requete->bindValue(':image_url', $recette->getImageUrl());
+        $requete->bindValue(':image_url', $recette->getImage());
         $requete->bindValue(':difficulty', $recette->getDifficulty());
         $requete->bindValue(':preparation_time', $recette->getPreparationTime());
         $requete->bindValue(':utensils', $recette->getUstensils());
@@ -162,12 +155,12 @@ class RecetteManager {
         $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
         return $resultats;
     }
-    public function getRecipeById($recette_id) {
-        $requete = $this->pdo->prepare("SELECT * FROM recettes WHERE id=:id");
-        $requete->bindValue(':id', $recette_id);
+
+    public function getAllRecipes() {
+        $requete = $this->pdo->prepare("SELECT * FROM recettes");
         $requete->execute();
-        $resultat = $requete->fetchObject('Recette');
-        return $resultat;
+        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
+        return $resultats;
     }
 }
 
