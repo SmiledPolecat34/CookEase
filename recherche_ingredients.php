@@ -1,4 +1,5 @@
 <?php
+// recherche_ingredients.php
 // Connexion à la base de données
 require_once('config.php');
 $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
@@ -8,33 +9,23 @@ if (isset($_GET['search'])) {
     $search = $_GET['search'];
 
     // Effectuer la recherche dans la base de données
-    $query = "SELECT * FROM ingredients WHERE name LIKE :search";
+    $query = "SELECT r.* FROM recettes r 
+              INNER JOIN recette_ingredient ri ON r.id = ri.recette_id
+              INNER JOIN ingredients i ON ri.ingredient_id = i.id
+              WHERE r.name LIKE :search OR i.name LIKE :search";
     $statement = $pdo->prepare($query);
     $statement->bindValue(':search', '%' . $search . '%');
     $statement->execute();
-    $ingredients = $statement->fetchAll(PDO::FETCH_ASSOC);
+    $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
     // Afficher les résultats de la recherche
-    foreach ($ingredients as $ingredient) {
+    foreach ($results as $result) {
         echo '<div>';
-        echo '<p>' . $ingredient['name'] . '</p>';
-        echo '<button onclick="addIngredient(' . $ingredient['id'] . ')">Ajouter</button>';
+        echo '<h2>' . $result['name'] . '</h2>';
+        // Affiche d'autres détails de la recette si nécessaire
+        // ...
         echo '</div>';
     }
-
-    if (isset($_GET['search'])) {
-        // ... (Ton code PHP pour la recherche d'ingrédients ici)
-    
-        echo '<h2>Liste des ingrédients sélectionnés :</h2>';
-        echo '<ul id="ingredientList"></ul>';
-    
-        echo '<script>';
-        echo 'function addIngredient(id) {';
-        echo '    const ingredient = document.createElement(\'li\');';
-        echo '    ingredient.textContent = \'Ingrédient \' + id;';
-        echo '    document.getElementById(\'ingredientList\').appendChild(ingredient);';
-        echo '}';
-        echo '</script>';
-    }
 }
+
 ?>

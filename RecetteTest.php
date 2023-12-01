@@ -2,7 +2,7 @@
 
 // RecetteTest.php
 
-require_once ('./config.php');
+require_once ('config.php');
 require_once ('./Back/Recette.php');
 
 use PHPUnit\Framework\TestCase;

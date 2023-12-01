@@ -33,23 +33,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 ?>
 
 <!DOCTYPE html>
-<link rel="stylesheet" href="ajouterrecette.css">
 <html lang="fr">
 <head>
+    <link rel="stylesheet" href="ajouterrecette.css">
     <meta charset="UTF-8">
     <title>Ajouter une catégorie</title>
     <!-- Ajoute ici tes liens vers des fichiers CSS ou des CDN pour le style -->
 </head>
 <body>
-    <div class="container">
+    <div class ="container">
     <h2><a href="index.php">Retour à la liste des recettes</a></h2>
     <h1>Ajouter une catégorie</h1>
-    <form action="ajouter_categorie.php" method="post" enctype="multipart/form-data">
+    <form action="ajouter_categorie.php" method="post">
         <label for="category_name">Nom de la catégorie :</label>
         <input type="text" id="category_name" name="category_name"><br><br>
 
         <input type="submit" value="Ajouter la catégorie">
     </form>
+    </div>
 </body>
 </html>
 
