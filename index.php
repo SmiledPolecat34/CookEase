@@ -1,9 +1,35 @@
+<?php
+require_once('config.php');
+require_once('Back/Recette.php');
+
+$pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
+$recetteManager = new RecetteManager($pdo);
+
+$recettes = $recetteManager->getAllRecipes();
+
+// Formatage des recettes pour éviter les problèmes avec les guillemets
+$recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Recettes</title>
-    <!-- Ajoute ici tes liens vers des fichiers CSS ou des CDN pour le style -->
+    <style>
+        /* Ajoute un style pour que les images soient des liens cliquables */
+        .recipe-link {
+            display: inline-block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .recipe-link img {
+            display: block;
+            width: 200px; /* Ajuste la taille des images à ta convenance */
+            height: auto;
+        }
+    </style>
 </head>
 <body>
     <h1>Liste des recettes</h1>
@@ -11,33 +37,21 @@
     <a href="AjouterUneRecette.php">Ajouter une recette</a>
     <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
     <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
-    
-    <?php
-    // Inclure ici les fichiers Recette.php, Categorie.php, Ingredient.php et RecetteIngredient.php
-    require_once('Back/Recette.php');
-    require_once('Back/Categorie.php');
-    require_once('Back/Ingredient.php');
-    require_once('Back/RecetteIngredient.php'); 
-    require_once('config.php');
-    
-    // Connexion à la base de données (à remplir avec tes informations de connexion)
-    $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
-    
-    // Création d'une instance de RecetteManager
-    $recetteManager = new RecetteManager($pdo);
-    
-    $category_id = 1; // À adapter selon ta logique
-    // Récupération de toutes les recettes
-    $recettes = $recetteManager->getRecipesByCategory($category_id); // À adapter selon ta logique
-    
-    // Affichage des recettes
-    foreach ($recettes as $recette) {
-        echo '<div>';
-        echo '<h2>' . $recette->getName() . '</h2>';
-        echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
-        echo '</div>';
-    }
-    ?>
+
+    <div id="recipes-container">
+        <!-- Affichage des images avec des liens -->
+        <?php
+        foreach ($recettes as $recette) {
+            echo '<div>';
+            // Crée un lien pour chaque image avec le nom de la recette comme texte du lien
+            echo '<a class="recipe-link" href="afficher_ingredients.php?recipe_id=' . $recette->getId() . '">';
+            echo '<h2>' . $recette->getName() . '</h2>';
+            echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
+            echo '</a>';
+            echo '</div>';
+        }
+        ?>
+    </div>
 
 </body>
 </html>

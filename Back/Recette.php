@@ -140,6 +140,13 @@ class RecetteManager {
         $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
         return $resultats;
     }
+
+    public function getAllRecipes() {
+        $requete = $this->pdo->prepare("SELECT * FROM recettes");
+        $requete->execute();
+        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
+        return $resultats;
+    }
 }
 
 ?>

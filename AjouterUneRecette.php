@@ -1,19 +1,55 @@
+<!-- AjouterUneRecette.php -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Ajouter une recette</title>
     <!-- Ajoute ici tes liens vers des fichiers CSS ou des CDN pour le style -->
+    <script>
+        function handleFileInputChange() {
+            const fileInput = document.getElementById('image_file');
+            const imageUrlInput = document.getElementById('image_url');
+            const deleteFileButton = document.getElementById('delete_file_button');
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    imageUrlInput.value = e.target.result;
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+                deleteFileButton.style.display = 'inline'; // Affiche le bouton "Supprimer"
+            }
+        }
+
+        function deleteSelectedFile() {
+            const fileInput = document.getElementById('image_file');
+            const imageUrlInput = document.getElementById('image_url');
+            const deleteFileButton = document.getElementById('delete_file_button');
+
+            // Réinitialise les champs et cache le bouton "Supprimer"
+            fileInput.value = '';
+            imageUrlInput.value = '';
+            deleteFileButton.style.display = 'none';
+        }
+    </script>
 </head>
 <body>
     <h2><a href="index.php">Retour à la liste des recettes</a></h2>
     <h1>Ajouter une recette</h1>
-    <form action="ajouter_recette.php" method="post">
+    <form action="ajouter_recette.php" method="post" enctype="multipart/form-data">
         <label for="name">Nom de la recette :</label>
         <input type="text" id="name" name="name"><br><br>
 
-        <label for="image_url">URL de l'image :</label>
-        <input type="text" id="image_url" name="image_url"><br><br>
+        <label for="image">Image :</label>
+        <input type="text" id="image_url" name="image_url" placeholder="URL de l'image"><br><br>
+
+        <input type="file" id="image_file" name="image_file" onchange="handleFileInputChange()"><br><br>
+
+        <!-- Bouton pour supprimer la sélection du fichier -->
+        <button type="button" id="delete_file_button" style="display: none;" onclick="deleteSelectedFile()">Supprimer</button><br><br>
 
         <label for="difficulty">Difficulté :</label>
         <input type="text" id="difficulty" name="difficulty"><br><br>
@@ -21,13 +57,34 @@
         <label for="preparation_time">Temps de préparation (minutes) :</label>
         <input type="number" id="preparation_time" name="preparation_time"><br><br>
 
-        <label for="ustensils">Ustensiles :</label>
+        <label for="ustensils">Ustensils :</label>
         <input type="text" id="ustensils" name="utensils"><br><br>
 
-        <label for="quantity">Quantité :</label>
+        <label for="quantity">Nombre de personnes :</label>
         <input type="text" id="quantity" name="quantity"><br><br>
 
-        <!-- Ajout du champ Catégorie sous forme de liste déroulante -->
+        <label for="ingredient_list">Sélectionner les ingrédients :</label>
+<select id="ingredient_list" name="ingredient_list[]" multiple>
+    <?php
+    // Connexion à la base de données et récupération des ingrédients
+    require_once('config.php');
+    require_once('Back/Ingredient.php');
+
+    $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $port, $username, $password);
+    $ingredientManager = new IngredientManager($pdo);
+
+    // Récupération de tous les ingrédients depuis la base de données
+    $ingredients = $ingredientManager->getAllIngredients();
+
+    // Affichage des ingrédients dans la liste déroulante
+    foreach ($ingredients as $ingredient) {
+        echo '<option value="' . $ingredient->getId() . '">' . $ingredient->getName() . '</option>';
+        // Si l'ingrédient est sélectionné, ajoute l'attribut "selected" à l'option
+    }
+    ?>
+</select><br><br>
+
+
         <label for="category_id">Catégorie :</label>
         <select id="category_id" name="category_id">
             <option value="1">Entrée</option>
@@ -38,26 +95,12 @@
             <option value="6">Accompagnement</option>
         </select><br><br>
 
-        <!-- Pratique alimentaire -->
-        <!-- MODIFIER LA BDD -->
-        <!-- <label for="pratique_alimentaire">Catégorie alimentaire :</label>
-        <select id="pratique_alimentaire" name="pratique_alimentaire">
-            <option value="1">Carnivore</option>
-            <option value="2">Omnivore</option>
-            <option value="3">Carnivore</option>
-            <option value="4">Végétarien</option>
-            <option value="5">Végétalien</option>
-            <option value="6">Sans gluten</option>
-            <option value="7">Sans lactose</option>
-            <option value="8">Autre</option>
-        </select><br><br> -->
         <input type="submit" value="Ajouter la recette">
-    </form>
+    <!-- </form>
     <form action="recherche_ingredients.php" method="get">
-    <label for="search">Rechercher un ingrédient :</label>
-    <input type="text" id="search" name="search">
-    <input type="submit" value="Rechercher">
-</form>
-
+        <label for="search">Rechercher un ingrédient :</label>
+        <input type="text" id="search" name="search">
+        <input type="submit" value="Rechercher">
+    </form> -->
 </body>
 </html>

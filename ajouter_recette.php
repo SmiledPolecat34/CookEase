@@ -1,4 +1,6 @@
 <?php
+
+// Ajouter_recette.php
 require_once('Back/Recette.php'); // Assure-toi de l'inclure ici
 require_once('config.php'); // Inclus ton fichier de configuration
 
