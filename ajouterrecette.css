@@ -1,0 +1,81 @@
+body {
+    background-color: #f7f7f7;
+    color: #333;
+    font-family: 'Impact', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px; /* Adjust the width as needed */
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* Add a white background */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+    border-radius: 10px; /* Rounded corners */
+}
+
+h2 {
+    font-size: 1.5em;
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 10px;
+}
+
+input,
+select {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+button {
+    padding: 15px;
+    background-color: #151414;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #333;
+}
+
+table {
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}

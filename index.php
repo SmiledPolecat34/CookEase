@@ -1,31 +1,36 @@
-<!-- index.php -->
+<?php
+require_once('config.php');
+require_once('Back/Recette.php');
+
+$pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
+$recetteManager = new RecetteManager($pdo);
+
+$recettes = $recetteManager->getAllRecipes();
+
+// Formatage des recettes pour éviter les problèmes avec les guillemets
+$recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
+
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <title>Recettes</title>
-    <style>
-        /* Ajoute un style pour que les images soient des liens cliquables */
-        .recipe-link {
-            display: inline-block;
-            text-decoration: none;
-            color: inherit;
-        }
-        .recipe-link img {
-            display: block;
-            width: 200px; /* Ajuste la taille des images à ta convenance */
-            height: auto;
-        }
-    </style>
-</head>
-<body>
-    <h1>Liste des recettes</h1>
-    
-    <a href="AjouterUneRecette.php">Ajouter une recette</a>
-    <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
-    <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
+    <link rel="stylesheet" href="index.css">
 
-    <!-- Barre de recherche -->
+</head>
+
+<body>
+    <div class="container">
+        <h1>Liste des recettes</h1>
+
+        <a href="AjouterUneRecette.php">Ajouter une recette</a>
+        <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
+        <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
+
+        <!-- Barre de recherche -->
     <form action="index.php" method="GET"> <!-- Le formulaire envoie les données à index.php -->
         <label for="search">Rechercher une recette ou un ingrédient :</label>
         <input type="text" id="search" name="search" placeholder="Nom de la recette ou de l'ingrédient">
@@ -68,6 +73,9 @@
         }
         ?>
     </div>
-
+    </div>
+    
 </body>
+
 </html>
+<link rel="stylesheet" href="ajouterrecette.css">

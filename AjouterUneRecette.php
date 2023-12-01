@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Ajouter une recette</title>
+    <link rel="stylesheet" href="ajouterrecette.css">
     <script>
         function addIngredientToList() {
             var ingredientList = document.getElementById('ingredient_list');
@@ -49,6 +50,7 @@
     </script>
 </head>
 <body>
+    <div class ="container">
     <h2><a href="index.php">Retour à la liste des recettes</a></h2>
     <h1>Ajouter une recette</h1>
     <form action="ajouter_recette.php" method="post" enctype="multipart/form-data">
@@ -127,5 +129,6 @@
 
         <input type="submit" value="Ajouter la recette">
     </form>
+    </div>
 </body>
 </html>
