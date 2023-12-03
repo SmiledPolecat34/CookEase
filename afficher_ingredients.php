@@ -28,9 +28,6 @@ if (isset($_GET['recipe_id'])) {
     // Récupération des ingrédients associés à la recette en fonction de son ID
     $ingredients = $ingredientManager->getIngredientsByRecipeId($recipe_id);
 
-
-    var_dump($ingredients);
-    
     // Affichage des ingrédients
     echo '<div class="ingredients-container">';
     echo '<h1>Ingrédients pour la recette</h1>';
@@ -43,7 +40,6 @@ if (isset($_GET['recipe_id'])) {
     
     // Récupération des étapes de préparation associées à la recette en fonction de son ID
     $steps = $stepManager->getStepsByRecipeId($recipe_id);
-    var_dump($steps);
     
 // Affichage des étapes de préparation
 echo '<div class="steps-container">';

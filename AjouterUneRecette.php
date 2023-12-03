@@ -127,8 +127,7 @@ function addStep() {
         $ingredients = $ingredientManager->getAllIngredients();
 
         // Affichage des ingrédients dans la liste déroulante
-        foreach ($ingredien
-        ts as $ingredient) {
+        foreach ($ingredients as $ingredient) {
             echo '<option value="' . $ingredient->getId() . '">' . $ingredient->getName() . '</option>';
             
         }

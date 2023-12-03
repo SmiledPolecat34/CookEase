@@ -156,6 +156,16 @@ class RecetteManager {
             $stmt->execute();
         }
     }
+
+    public function deleteRecipeById($recipe_id) {
+        $stmtIngredient = $this->pdo->prepare("DELETE FROM recette_ingredient WHERE recette_id = :recipe_id");
+        $stmtIngredient->bindParam(':recipe_id', $recipe_id);
+        $stmtIngredient->execute();
+
+        $stmtRecipe = $this->pdo->prepare("DELETE FROM recettes WHERE id = :recipe_id");
+        $stmtRecipe->bindParam(':recipe_id', $recipe_id);
+        $stmtRecipe->execute();
+    }
     
 
     public function getAllRecipes() {

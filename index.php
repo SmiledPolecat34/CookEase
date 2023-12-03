@@ -5,6 +5,13 @@ require_once('Back/Recette.php');
 $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
 $recetteManager = new RecetteManager($pdo);
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'])) {
+    $recipe_id = $_POST['id'];
+    $recetteManager->deleteRecipeById($recipe_id);
+    header("Location: index.php"); // Redirection vers la page principale après suppression
+    exit();
+}
+
 $recettes = $recetteManager->getAllRecipes();
 
 // Formatage des recettes pour éviter les problèmes avec les guillemets
@@ -76,16 +83,37 @@ $recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
                     echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
                     echo '<p> Difficulté : ' . $recette->getDifficulty() . '</p>';
                     echo '</a>';
+
+                    echo '<form method="POST" action="index.php">';
+                    echo '<input type="hidden" name="id" value="' . $recette->getId() . '">';
+                    echo '<button type="submit">Supprimer cette recette</button>';
+                    echo '</form>';
+                            
                     echo '</div>';
                 }
-                
-            } else {
-                echo '<p>Aucune recette trouvée pour votre recherche.</p>';
+    } else {
+    echo '<p>Aucune recette trouvée pour votre recherche.</p>';
+    }                
+            } 
+            
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                if (isset($_POST['id'])) {
+                    $recipe_id = $_POST['id'];
+                    $recipeToDelete = $recetteManager->getRecipeById($recipe_id);
+            
+                    if ($recipeToDelete) {
+                        $recetteManager->deleteRecipe($recipeToDelete);
+                        header("Location: index.php"); // Redirige vers la page principale après la suppression
+                        exit();
+                    } else {
+                        echo 'La recette à supprimer n\'existe pas.';
+                    }
+                }
             }
-        } else {
-            // Affiche un message si aucune recette n'est disponible
-            echo '<p>Aucune recette disponible pour le moment.</p>';
+            else {
+                echo '<p>Aucune recette trouvée pour votre recherche.</p>';
         }
+        
     ?>
 </body>
 
