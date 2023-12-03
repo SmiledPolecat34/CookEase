@@ -4,15 +4,31 @@ body {
     font-family: 'Impact', sans-serif;
     margin: 0;
     padding: 0;
-}
+  
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
+  }
+  
+  @keyframes gradient {
+    0% {
+        background-position: 10% 50%;
+    }
+    50% {
+        background-position: 100% 60%;
+    }
+    100% {
+        background-position: 10% 50%;
+    }
+  }
 
 .container {
-    max-width: 800px; /* Adjust the width as needed */
+    max-width: 800px; 
     margin: 0 auto;
     padding: 20px;
-    background-color: #fff; /* Add a white background */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
-    border-radius: 10px; /* Rounded corners */
+    background-color: #ffffffb5;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+    border-radius: 10px; 
 }
 
 h2 {
@@ -78,4 +94,20 @@ td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
+}
+#ingredient_list {
+    max-width: 2000px; 
+    height: 300px; 
+    border: 1px solid #ccc; 
+    border-radius: 5px; 
+    overflow-y: auto; 
+}
+
+#ingredient_list option {
+    padding: 9px; 
+    border-bottom: 2px solid #eee; 
+}
+
+#ingredient_list option:hover {
+    background-color: #f5f5f5; 
 }

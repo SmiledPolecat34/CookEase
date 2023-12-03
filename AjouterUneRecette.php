@@ -1,4 +1,3 @@
-<!-- AjouterUneRecette.php -->
 
 <!DOCTYPE html>
 <html lang="fr">
@@ -26,56 +25,56 @@
 
         let stepCounter = 1; // Initialisation du compteur d'étapes
 
-         // Fonction pour ajouter une étape
-         function addStep() {
-            const stepDescInput = document.getElementById('step_description');
-            const stepDesc = stepDescInput.value.trim(); // Récupère la valeur du champ pour la description de l'étape
+function addStep() {
+    const stepDescInput = document.getElementById('step_description');
+    const stepDesc = stepDescInput.value.trim(); // Récupère la valeur du champ pour la description de l'étape
 
-            if (stepDesc !== '') {
-                // Création d'un nouvel élément <li> pour l'étape avec la description
-                const newStep = document.createElement('li');
-                
-                // Numérotation de l'étape en fonction du nombre d'éléments dans la liste actuelle
-                const stepNumber = document.getElementById('step_list').getElementsByTagName('li').length + 1;
-                newStep.textContent = `${stepNumber}. ${stepDesc}`; // Utilisation du numéro et de la description de l'étape saisie
-                console.log(newStep.textContent);
-                // Ajout de l'élément <li> à la liste des étapes
-                const stepList = document.getElementById('step_list');
-                stepList.appendChild(newStep);
+    if (stepDesc !== '') {
+        // Création d'un nouvel élément <li> pour l'étape avec la description
+        const newStep = document.createElement('li');
+        
+        // Numérotation de l'étape en fonction du nombre d'éléments dans la liste actuelle
+        const stepNumber = document.getElementById('step_list').getElementsByTagName('li').length + 1;
+        newStep.textContent = `${stepNumber}. ${stepDesc}`; // Utilisation du numéro et de la description de l'étape saisie
+        
+        const stepList = document.getElementById('step_list');
+        stepList.appendChild(newStep);
 
-                // récupération de l'ensemble des étapes
-                const steps = document.getElementById('step_list').getElementsByTagName('li');
-                const stepData = [];
-                for (let i = 0; i < steps.length; i++) {
-                    stepData.push(steps[i].textContent);
-                }
-
-                // Stockage des étapes au format JSON dans le champ caché
-                const stepDataInput = document.getElementById('step_data');
-                stepDataInput.value = JSON.stringify(stepData);
-
-                // Remise à zéro du champ pour la description de l'étape
-                stepDescInput.value = '';   
-
-                // Incrémentation du compteur d'étapes
-                stepCounter++;
-
-                // Affichage du compteur d'étapes
-                const stepCounterElement = document.getElementById('step_counter');
-                stepCounterElement.textContent = stepCounter;
-            }
+        // Récupération de l'ensemble des étapes
+        const steps = document.getElementById('step_list').getElementsByTagName('li');
+        const stepData = [];
+        for (let i = 0; i < steps.length; i++) {
+            stepData.push(steps[i].textContent);
         }
+
+        // Stockage des étapes au format JSON dans le champ caché
+        const stepDataInput = document.getElementById('step_data');
+        stepDataInput.value = JSON.stringify(stepData);
+
+        // Remise à zéro du champ pour la description de l'étape
+        stepDescInput.value = '';   
+
+        // Incrémentation du compteur d'étapes
+        stepCounter++;
+
+        // Affichage du compteur d'étapes
+        const stepCounterElement = document.getElementById('step_counter');
+        stepCounterElement.textContent = stepCounter;
+    }
+}
+
     </script>
 </head>
 <body>
     <div class ="container">
     <h2><a href="index.php">Retour à la liste des recettes</a></h2>
     <h1>Ajouter une recette</h1>
-    <form action="ajouter_recette.php" method="post" enctype="multipart/form-data">
+    <form action="ajouter_recette.php" method="POST">
+        
         <label for="name">Nom de la recette :</label>
         <input type="text" id="name" name="name"><br><br>
 
-        <label for="image">Image :</label>
+        <label for="image_url">Image :</label>
         <input type="text" id="image_url" name="image_url" placeholder="URL de l'image"><br><br>
 
         <label for="difficulty">Difficulté :</label>
@@ -84,20 +83,33 @@
         <label for="preparation_time">Temps de préparation (minutes) :</label>
         <input type="number" id="preparation_time" name="preparation_time"><br><br>
 
-        <label for="ustensils">Ustensils :</label>
-        <input type="text" id="ustensils" name="utensils"><br><br>
+        <label for="utensils">Ustensiles :</label>
+        <input type="text" id="utensils" name="utensils"><br><br>
 
         <label for="quantity">Nombre de personnes :</label>
         <input type="text" id="quantity" name="quantity"><br><br>
 
         <label for="category_id">Catégorie :</label>
         <select id="category_id" name="category_id">
-            <option value="1">Entrée</option>
-            <option value="2">Plat</option>
-            <option value="3">Dessert</option>
-            <option value="4">Boisson</option>
-            <option value="5">Sauce</option>
-            <option value="6">Accompagnement</option>
+           <!-- // boucle d'option de la bdd -->
+        <?php
+        // Connexion à la base de données et récupération des catégories
+        require_once('config.php');
+        require_once('Back/Categorie.php');
+
+        $pdo = new PDO('mysql:host=' . $host . ';dbname=' . $dbname . ';port=' . $port, $username, $password);
+
+        // Récupération de toutes les catégories depuis la base de données
+        $requete = $pdo->prepare("SELECT * FROM categories");
+        $requete->execute();
+        $categories = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+        // Affichage des catégories dans la liste déroulante
+        foreach ($categories as $categorie) {
+            echo '<option value="' . $categorie['id'] . '">' . $categorie['name'] . '</option>';
+        }
+
+        ?>
         </select><br><br>
 
         <label for="ingredient_list">Sélectionner les ingrédients :</label>
@@ -115,9 +127,10 @@
         $ingredients = $ingredientManager->getAllIngredients();
 
         // Affichage des ingrédients dans la liste déroulante
-        foreach ($ingredients as $ingredient) {
+        foreach ($ingredien
+        ts as $ingredient) {
             echo '<option value="' . $ingredient->getId() . '">' . $ingredient->getName() . '</option>';
-            // Si l'ingrédient est sélectionné, ajoute l'attribut "selected" à l'option
+            
         }
         ?>
         </select><br><br>
@@ -131,18 +144,15 @@
         </table>
 
         <!-- Champ caché pour stocker les étapes au format JSON -->
-        <input type="hidden" id="step_data" name="etape" />
-
-        <!-- Champ pour écrire le nom de l'étape -->
-        <!-- <input type="text" id="step_name" placeholder="Nom de l'étape"> -->
+        <input type="text" id="step_data" name="steps" />
 
         <!-- Champ pour écrire la description de l'étape -->
-        <input type="text" id="step_description" placeholder="Description de l'étape">
+        <input type="text" id="step_description" name="step[]" placeholder="Description de l'étape">
 
         <span id="step_counter"></span>
 
-        <!-- Votre bouton "Ajouter étape" -->
-        <button type="button" onclick="addStep()">Ajouter une étape</button>
+        
+        <button type="button" onclick="addStep()">Nouvelle étape</button>
 
         <!-- Liste des étapes -->
         <ol id="step_list"></ol>
@@ -152,3 +162,4 @@
     </div>
 </body>
 </html>
+

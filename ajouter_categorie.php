@@ -1,10 +1,10 @@
 <?php
-require_once('Back/Categorie.php'); // Assure-toi de l'inclure ici
-require_once('config.php'); // Inclus ton fichier de configuration
+require_once('Back/Categorie.php'); 
+require_once('config.php');
 
 // Vérifie si des données ont été soumises
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Récupération des données du formulaire
+    
     $category_name = $_POST['category_name'] ?? '';
 
     // Création d'une instance de Categorie
@@ -22,14 +22,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirection vers une page après l'ajout
         header('Location: index.php');
-        exit(); // Assure-toi de terminer le script après la redirection
+        exit(); 
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
     }
 } else {
-    // Si aucune donnée n'a été soumise
+    
     echo "Aucune donnée n'a été soumise.";
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="ajouterrecette.css">
     <meta charset="UTF-8">
     <title>Ajouter une catégorie</title>
-    <!-- Ajoute ici tes liens vers des fichiers CSS ou des CDN pour le style -->
+    
 </head>
 <body>
     <div class ="container">

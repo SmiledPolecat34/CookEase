@@ -1,5 +1,5 @@
 <?php
-// recherche_ingredients.php
+
 // Connexion à la base de données
 require_once('config.php');
 $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
@@ -22,9 +22,8 @@ if (isset($_GET['search'])) {
     foreach ($results as $result) {
         echo '<div>';
         echo '<h2>' . $result['name'] . '</h2>';
-        // Affiche d'autres détails de la recette si nécessaire
-        // ...
         echo '</div>';
+
     }
 }
 

@@ -13,6 +13,7 @@ $recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
 ?>
 
 <!DOCTYPE html>
+<link rel="stylesheet" href="ajouterrecette.css">
 <html lang="fr">
 
 <head>
@@ -25,10 +26,11 @@ $recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
 <body>
     <div class="container">
         <h1>Liste des recettes</h1>
-
-        <a href="AjouterUneRecette.php">Ajouter une recette</a>
-        <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
-        <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
+        <div class="nav">
+            <a href="AjouterUneRecette.php">Ajouter une recette</a>
+            <a href="Ajouter_categorie.php">Ajouter une catégorie</a>
+            <a href="AjouterIngredient.php">Ajouter un ingrédient</a>
+        </div>
 
         <!-- Barre de recherche -->
     <form action="index.php" method="GET"> <!-- Le formulaire envoie les données à index.php -->
@@ -55,25 +57,28 @@ $recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
         
             // Affichage des résultats de la recherche
             if (count($results) > 0) {
-                foreach ($results as $recette) {
+                foreach ($results as $result) {
+                    // Utiliser les valeurs de $result pour créer une instance de Recette
+                    $recette = new Recette();
+                    $recette->setId($result['id']);
+                    $recette->setName($result['name']);
+                    $recette->setImage($result['image_url']);
+                    $recette->setDifficulty($result['difficulty']);
+                    $recette->setPreparationTime($result['preparation_time']);
+                    $recette->setUstensils($result['utensils']);
+                    $recette->setQuantity($result['quantity']);
+                    $recette->setCategoryId($result['category_id']);
+                
+                    // Utiliser $recette pour accéder aux propriétés et méthodes de la classe Recette
                     echo '<div>';
                     echo '<a class="recipe-link" href="afficher_ingredients.php?recipe_id=' . $recette->getId() . '">';
                     echo '<h2>' . $recette->getName() . '</h2>';
                     echo '<img src="' . $recette->getImage() . '" alt="' . $recette->getName() . '">';
                     echo '<p> Difficulté : ' . $recette->getDifficulty() . '</p>';
                     echo '</a>';
-                                
-                    // Formulaire de suppression
-    echo '<form method="post">';
-    echo '<input type="hidden" name="recipe_id" value="' . $recette->getId() . '">';
-    echo '<input type="submit" name="delete_recipe" value="Supprimer">';
-    echo '</form>';
-    
-    echo '</div>';
-
-
-
+                    echo '</div>';
                 }
+                
             } else {
                 echo '<p>Aucune recette trouvée pour votre recherche.</p>';
             }
@@ -81,11 +86,7 @@ $recettesJSON = json_encode($recettes, JSON_HEX_QUOT | JSON_HEX_TAG);
             // Affiche un message si aucune recette n'est disponible
             echo '<p>Aucune recette disponible pour le moment.</p>';
         }
-        ?>
-    </div>
-    </div>
-    
+    ?>
 </body>
 
 </html>
-<link rel="stylesheet" href="ajouterrecette.css">

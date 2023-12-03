@@ -1,6 +1,5 @@
 <?php
 
-// CategorieTest.php
 
 require_once ('./Back/Categorie.php');
 

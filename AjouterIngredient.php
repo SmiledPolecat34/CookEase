@@ -1,5 +1,5 @@
 <?php
-// Assure-toi d'inclure le fichier de configuration et la classe Ingredient ici si ce n'est pas déjà fait
+
 require_once('Back/Ingredient.php');
 require_once('config.php');
 
@@ -23,12 +23,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Redirection vers la page d'accueil ou une autre page après l'ajout
         header('Location: index.php');
-        exit(); // Assure-toi de terminer le script après la redirection
+        exit(); 
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
     }
 } else {
-    // Si aucune donnée n'a été soumise
+    
     echo "Aucune donnée n'a été soumise.";
 }
 ?>
@@ -39,7 +39,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="stylesheet" href="ajouterrecette.css">
     <meta charset="UTF-8">
     <title>Ajouter un ingrédient</title>
-    <!-- Ajoute ici tes liens vers des fichiers CSS ou des CDN pour le style -->
+    
 </head>
 <body>
     <div class ="container">

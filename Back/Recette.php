@@ -1,5 +1,5 @@
 <?php
-// Recette.php
+
 
 class Recette {
     private $id;
@@ -11,7 +11,7 @@ class Recette {
     private $quantity;
     private $category_id;
     private $ingredient_list;
-    private $etape;
+    private $steps;
 
     public function getId() {
         return $this->id;
@@ -49,8 +49,8 @@ class Recette {
         return $this->ingredient_list;
     }
 
-    public function getEtape() {
-        return $this->etape;
+    public function getSteps() {
+        return $this->steps;
     }
 
     public function setId($id) {
@@ -67,15 +67,7 @@ class Recette {
                 // Si c'est une URL valide, stocke directement l'URL
                 $this->image_url = $image_url;
             } 
-            // else {
-            //     // Si le chemin local existe, considère-le comme une URL valide
-            //     if (file_exists($image_url)) {
-            //         $this->image_url = $image_url;
-            //     } else {
-            //         // Si le chemin local n'existe pas, traite-le comme une valeur nulle
-            //         $this->image_url = null;
-            //     }
-            // }
+           
         } else {
             // Gère le cas où aucune URL n'est fournie
             $this->image_url = null;
@@ -108,9 +100,10 @@ class Recette {
         $this->ingredient_list = $ingredient_list;
     }
 
-    public function setEtape($etape) {
-        $this->etape = $etape;
+    public function setSteps($steps) {
+        $this->steps = is_string($steps) ? json_decode($steps, true) : $steps;
     }
+    
 }
 
 class RecetteManager {
@@ -121,72 +114,69 @@ class RecetteManager {
     }
 
     public function addRecipe($recette) {
-            $requete = $this->pdo->prepare("INSERT INTO recettes (name, image_url, difficulty, preparation_time, utensils, quantity, category_id, etape) VALUES (:name, :image_url, :difficulty, :preparation_time, :utensils, :quantity, :category_id, :etape)");
-            $requete->bindValue(':name', $recette->getName());
-            $requete->bindValue(':image_url', $recette->getImage());
-            $requete->bindValue(':difficulty', $recette->getDifficulty());
-            $requete->bindValue(':preparation_time', $recette->getPreparationTime());
-            $requete->bindValue(':utensils', $recette->getUstensils());
-            $requete->bindValue(':quantity', $recette->getQuantity());
-            $requete->bindValue(':category_id', $recette->getCategoryId());
-            
-            // Formatage des étapes en JSON pour insertion dans la base de données
-            $etape = json_encode($recette->getEtape());
-            $requete->bindValue(':etape', $etape);
-        
-            $requete->execute();
-            $recette->setId($this->pdo->lastInsertId());
-        $requete = $this->pdo->prepare("INSERT INTO recette_ingredient (recette_id, ingredient_id) VALUES (:recette_id, :ingredient_id)");
+        $name = $recette->getName();
+        $image_url = $recette->getImage();
+        $difficulty = $recette->getDifficulty();
+        $preparation_time = $recette->getPreparationTime();
+        $utensils = $recette->getUstensils();
+        $quantity = $recette->getQuantity();
+        $category_id = $recette->getCategoryId();
+        $steps = $recette->getSteps();
+    
+        // Prepare the SQL statement
+        $stmt = $this->pdo->prepare("
+            INSERT INTO recettes (name, image_url, difficulty, preparation_time, utensils, quantity, category_id, steps)
+            VALUES (:name, :image_url, :difficulty, :preparation_time, :utensils, :quantity, :category_id, :steps)
+        ");
+    
+        // Bind parameters
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':image_url', $image_url);
+        $stmt->bindParam(':difficulty', $difficulty);
+        $stmt->bindParam(':preparation_time', $preparation_time);
+        $stmt->bindParam(':utensils', $utensils);
+        $stmt->bindParam(':quantity', $quantity);
+        $stmt->bindParam(':category_id', $category_id);
+        $stmt->bindParam(':steps', $stepsAsString);
+    
+        // Execute the statement
+        $stmt->execute();
+    
+        // Retrieve the last inserted ID
+        $recipe_id = $this->pdo->lastInsertId();
+    
+        // Add ingredients to the association table
         foreach ($recette->getIngredientList() as $ingredient_id) {
-            $requete->bindValue(':recette_id', $recette->getId());
-            $requete->bindValue(':ingredient_id', $ingredient_id);
-            $requete->execute();
+            $stmt = $this->pdo->prepare("
+                INSERT INTO recette_ingredient (recette_id, ingredient_id)
+                VALUES (:recette_id, :ingredient_id)
+            ");
+            $stmt->bindParam(':recette_id', $recipe_id);
+            $stmt->bindParam(':ingredient_id', $ingredient_id);
+            $stmt->execute();
         }
     }
-
-    public function updateRecipe($recette) {
-        $requete = $this->pdo->prepare("UPDATE recettes SET name=:name, image_url=:image_url, difficulty=:difficulty, preparation_time=:preparation_time, utensils=:utensils, quantity=:quantity, category_id=:category_id, etape=:etape WHERE id=:id");
-        $requete->bindValue(':id', $recette->getId());
-        $requete->bindValue(':name', $recette->getName());
-        $requete->bindValue(':image_url', $recette->getImage());
-        $requete->bindValue(':difficulty', $recette->getDifficulty());
-        $requete->bindValue(':preparation_time', $recette->getPreparationTime());
-        $requete->bindValue(':utensils', $recette->getUstensils());
-        $requete->bindValue(':quantity', $recette->getQuantity());
-        $requete->bindValue(':category_id', $recette->getCategoryId());
-        $requete->bindValue(':etape', $recette->getEtape());
-        $requete->execute();
-    }
-
-    public function deleteRecipe($recette) {
-        $requete = $this->pdo->prepare("DELETE FROM recettes WHERE id=:id");
-        $requete->bindValue(':id', $recette->getId());
-        $requete->execute();
-    }
     
-
-    public function getRecipesByCategory($category_id) {
-        $requete = $this->pdo->prepare("SELECT * FROM recettes WHERE category_id=:category_id");
-        $requete->bindValue(':category_id', $category_id);
-        $requete->execute();
-        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
-        return $resultats;
-    }
 
     public function getAllRecipes() {
         $requete = $this->pdo->prepare("SELECT * FROM recettes");
         $requete->execute();
-        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
-        return $resultats;
-    }
+        $recettes = $requete->fetchAll(PDO::FETCH_ASSOC);
 
+        return $recettes;
+    }
+    
     public function searchRecipes($search) {
         $requete = $this->pdo->prepare("SELECT * FROM recettes WHERE name LIKE :search");
         $requete->bindValue(':search', '%' . $search . '%');
         $requete->execute();
-        $resultats = $requete->fetchAll(PDO::FETCH_CLASS, 'Recette');
-        return $resultats;
+        $recettes = $requete->fetchAll(PDO::FETCH_ASSOC);
+
+        return $recettes;
     }
+
 }
+    
 
 ?>
+

@@ -1,11 +1,11 @@
 <?php
-// Ajouter_recette.php
+
 require_once('Back/Recette.php');
 require_once('config.php');
-require_once('Back/ajouter_etapes.php');
 
 // Vérifie si des données ont été soumises
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
     // Récupération des données du formulaire
     $name = $_POST['name'] ?? '';
     $image_url = $_POST['image_url'] ?? '';
@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantity = $_POST['quantity'] ?? '';
     $category_id = $_POST['category_id'] ?? '';
     $ingredient_list = $_POST['ingredient_list'] ?? '';
-    $recipe_id = $_POST['id'] ?? '';
-    $steps = $_POST['etape'] ?? '';
+    $steps = $_POST['steps'] ?? '';
+
 
     // Création d'une instance de Recette
     $recette = new Recette();
@@ -28,8 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $recette->setQuantity($quantity);
     $recette->setCategoryId($category_id);
     $recette->setIngredientList($ingredient_list);
-    $recette->setEtape($steps);
-
+    $recette->setSteps($steps);
 
     try {
         // Connexion à la base de données
@@ -48,8 +47,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Erreur : " . $e->getMessage();
     }
 } else {
-    // Si aucune donnée n'a été soumise
-    echo "Aucune donnée n'a été soumise.";
+    echo "Aucune action de mise à jour n'a été demandée.";
 }
-
-?>  
+?>

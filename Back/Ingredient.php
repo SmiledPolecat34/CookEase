@@ -27,7 +27,8 @@ class IngredientManager {
     public function __construct($pdo) {
         $this->pdo = $pdo;
     }
-
+    
+    // Récupère les ingrédients d'une recette
     public function getIngredientsByRecipeId($recipe_id) {
         $sql = 'SELECT i.id, i.name FROM ingredients i INNER JOIN recette_ingredient ri ON i.id = ri.ingredient_id WHERE ri.recette_id = :recipe_id';
         $stmt = $this->pdo->prepare($sql);
@@ -39,7 +40,7 @@ class IngredientManager {
 
     public function getAllIngredients() {
         $sql = 'SELECT * FROM ingredients';
-        $stmt = $this->pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);  
         $stmt->execute();
         $stmt->setFetchMode(PDO::FETCH_CLASS, 'Ingredient');
         $ingredients = $stmt->fetchAll();

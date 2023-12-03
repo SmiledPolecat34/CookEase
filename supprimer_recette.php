@@ -3,11 +3,11 @@ require_once('config.php');
 require_once('Back/Recette.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['recipe_id'])) {
+    if (isset($_POST['id'])) {
         $pdo = new PDO('mysql:host='.$host.';dbname='.$dbname.';port='.$port, $username, $password);
         $recetteManager = new RecetteManager($pdo);
 
-        $recipe_id = $_POST['recipe_id'];
+        $recipe_id = $_POST['id'];
         $recipeToDelete = $recetteManager->getRecipeById($recipe_id);
 
         if ($recipeToDelete) {

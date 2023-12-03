@@ -1,7 +1,5 @@
     <?php
 
-    // RecetteIngredient.php
-
     class RecetteIngredient {
         private $recette_id;
         private $ingredient_id;
